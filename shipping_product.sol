@@ -2,11 +2,7 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
-/**
- * @title Owner
- * @dev Set & change owner
- */
-contract Owner {
+contract TravelManager {
     struct ShippingCompany {
         string name;
         address shipper_wallet;
@@ -185,7 +181,12 @@ contract Owner {
                 
             // }
         }
-        
+
+        travels[travel_id] = _travel;
+    }
+
+    function getTravel(uint256 travel_id) public view returns(Travel memory){
+        return travels[travel_id];
     }
 
     function alterAgreement(uint256 travel_id) public returns(uint){
@@ -203,7 +204,7 @@ contract Owner {
             _travel.status.client = true;
         } 
 
-        // travels[travel_id] = _travel;
+        travels[travel_id] = _travel;
         checkCurrentStatusUpdate(travel_id);
 
         return 1;
