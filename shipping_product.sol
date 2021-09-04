@@ -9,13 +9,13 @@ pragma solidity >=0.7.0 <0.9.0;
 contract Owner {
     struct ShippingCompany {
         string name;
-        address shipper_account;
+        address shipper_wallet;
         string cnpj;
     }
 
     struct Driver {
         string name;
-        address driver_account;
+        address driver_wallet;
         string cpf;
     }
 
@@ -23,7 +23,7 @@ contract Owner {
         uint256 width;
         uint256 height;
         uint256 weight;
-    }
+    } 
 
     struct Product {
         string name;
@@ -34,118 +34,192 @@ contract Owner {
         string cpf;
         string name;
         string client_address;
-        uint256 client_id;
+        address client_wallet;
     }
 
-    struct Agreement {
-        bool company;
-        bool client;
-    }
-    struct Started{
-        bool value;
-        Agreement agreement;
-    }   
     struct Status {
-        Started started;
-        // struct on_going{
-        //   uint code;
-        //   bool value;
-        // };
-        // struct finished{
-        //   uint code;
-        //   bool value;
-        // };
+        bool client;
+        bool driver;
+        bool shipping_company;
+        
+        uint8 current_status; //0 not started, 1 started, 2 on going, 3 finished
     }
 
     struct Travel {
-        int256 trip_cost;
+        uint256 travel_cost;
         string from;
         string to;
         Status status;
         Product product;
         Client client;
-        ShippingCompany shippingCompany;
+        ShippingCompany shipping_company;
         Driver driver;
     }
-
-    Client client;
-    Product product;
-
-    //  function setClient() public {
-    //     client = Client('859.627.940-79','Robertinho', 'TP', 1);
-    //  }
-
-    //  function setProduct() public {
-    //     product = Product('Suco', '');
-    //  }
-
-    function changeStatus(value){
-        if(msg.sender == company.company_address ){
-            altera estado
-        }else if(msg.sender == company.client_address ){
-             altera estado
-        }else if(msg.sender == company.client_address ){
-
-        }else{
-            erro
-        }
-    }
-
-
+    
     mapping(uint256 => Travel) travels;
+    uint256 travels_size = 0;
+    mapping(address => Driver) drivers;
+    mapping(address => Client) clients;
+    mapping(address => ShippingCompany) shipping_companies;
 
-    function createTravel(Driver driver, ) public view return (uint256){
 
+    function buildStatus() private pure returns (Status memory){
+            Status memory status;
+            status.client = false;
+            status.shipping_company = true;
+            status.driver = false;
+            status.current_status = 0;
+            
+            return status;
     }
 
-    // function createClient(payload) private {
-    //     return new Client(payload);
-    // }
+    function createTravel(address driver_wallet, address client_wallet, address shipper_wallet, 
+        uint256 travel_cost, string memory from, string memory to, string memory product_name, uint256 weight, 
+        uint256 width, uint256 height) public returns (uint256) {
+            
+            Dimensions memory dimensions;
+            dimensions.width = width;
+            dimensions.height = height;
+            dimensions.weight = weight;
 
-    // function getBookId() public view returns (uint256) {
-    //     return client.client_id;
-    // }
-
-    // function handleChangeStatus(){
+            Product memory product;
+            product.name = product_name;
+            product.dimensions = dimensions;
       
-    // }
+            Travel memory travel;
+            travel.travel_cost = travel_cost;
+            travel.from = from;
+            travel.to = to;
+            travel.status = buildStatus();
+            travel.product = product;
+            travel.client = getClient(client_wallet);
+            travel.shipping_company = getShippingCompany(shipper_wallet);
+            travel.driver = getDriver(driver_wallet);
 
-    // // event for EVM logging
-    // event OwnerSet(address indexed oldOwner, address indexed newOwner);
-
-    // // modifier to check if caller is owner
-    // modifier isOwner() {
-    //     // If the first argument of 'require' evaluates to 'false', execution terminates and all
-    //     // changes to the state and to Ether balances are reverted.
-    //     // This used to consume all gas in old EVM versions, but not anymore.
-    //     // It is often a good idea to use 'require' to check if functions are called correctly.
-    //     // As a second argument, you can also provide an explanation about what went wrong.
-    //     require(msg.sender == owner, "Caller is not owner");
-    //     _;
-    // }
-
-    // /**
-    //  * @dev Set contract deployer as owner
-    //  */
-    // constructor() {
-    //     owner = msg.sender; // 'msg.sender' is sender of current call, contract deployer for a constructor
-    //     emit OwnerSet(address(0), owner);
-    // }
-
-    // /**
-    //  * @dev Change owner
-    //  * @param newOwner address of new owner
-    //  */
-    // function changeOwner(address newOwner) public isOwner {
-    //     emit OwnerSet(owner, newOwner);
-    //     owner = newOwner;
-    // }
-
-    // /**
-    //  * @dev Return owner address
-    //  * @return address of owner
-    //  */
-    // function getOwner() external view returns (address) {
-    //     return owner;
+            travels[travels_size] = travel;
+            travels_size +=1;
+            return 1;
     }
+
+    function createShippingCompany(string memory name, address shipper_wallet, string memory cnpj) public returns (uint256) {
+        if(shipping_companies[shipper_wallet].shipper_wallet == shipper_wallet){
+            return 0;
+        }
+        
+        ShippingCompany memory shipping_company;
+        
+        shipping_company.name = name;
+        shipping_company.shipper_wallet = shipper_wallet;
+        shipping_company.cnpj = cnpj;
+
+        shipping_companies[shipper_wallet] = shipping_company;
+    
+        return 1;
+    }
+        
+    function getShippingCompany(address shipper_wallet) public view returns (ShippingCompany memory){
+        return shipping_companies[shipper_wallet];
+    }
+
+    function createDriver(string memory name, address driver_wallet, string memory cpf) public returns (uint256) {
+        if(drivers[driver_wallet].driver_wallet == driver_wallet){
+            return 0;
+        }
+        
+        Driver memory driver;
+        
+        driver.name = name;
+        driver.driver_wallet = driver_wallet;
+        driver.cpf = cpf;
+
+        drivers[driver_wallet] = driver;
+    
+        return 1;
+    }
+        
+    function getDriver(address driver_wallet) public view returns (Driver memory){
+        return drivers[driver_wallet];
+    }
+
+
+    function createClient(string memory name, address client_wallet, string memory cpf, string memory client_address) public returns (uint256) {
+        if(clients[client_wallet].client_wallet == client_wallet){
+            return 0;
+        }
+        
+        Client memory client;
+        
+        client.name = name;
+        client.client_wallet = client_wallet;
+        client.cpf = cpf;
+        client.client_address = client_address;
+
+        clients[client_wallet] = client;
+    
+        return 1;
+    }
+        
+    function getClient(address client_wallet) public view returns (Client memory){
+        return clients[client_wallet];
+    }
+    
+    function checkCurrentStatusUpdate(uint256 travel_id) private{
+        Travel memory _travel = travels[travel_id];
+
+        //Se todos concordaram o status vai para o próximo passo
+        if(_travel.status.shipping_company && _travel.status.client && _travel.status.driver){
+            _travel.status.current_status += 1;
+            
+            if(_travel.status.current_status == 1){
+                _travel.status.shipping_company = false;
+                _travel.status.driver = false;
+            }
+
+            if(_travel.status.current_status == 2){
+                   _travel.status.driver = false;
+                   _travel.status.client = false;
+            }
+
+            // if(_travel.status.current_status == 3){
+            //     //verificar pagamentos e coisa e tal
+                
+            // }
+        }
+        
+    }
+
+    function alterAgreement(uint256 travel_id) public returns(uint){
+        Travel memory _travel = travels[travel_id];
+        
+        if(msg.sender == _travel.shipping_company.shipper_wallet){
+            _travel.status.shipping_company = true;
+        } 
+
+        if(msg.sender == _travel.driver.driver_wallet){
+            _travel.status.driver = true;
+        }
+        
+          if(msg.sender == _travel.client.client_wallet){
+            _travel.status.client = true;
+        } 
+
+        // travels[travel_id] = _travel;
+        checkCurrentStatusUpdate(travel_id);
+
+        return 1;
+    }
+
 }
+
+
+// not started = todos,
+
+// started = shipping_company, driver.
+
+// on_going = client, driver.
+
+// finished.
+
+
+
+
