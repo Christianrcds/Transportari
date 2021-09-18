@@ -1,0 +1,79 @@
+import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { FiArrowLeft } from "react-icons/fi";
+
+import api from "../../services/api";
+
+import "./styles.css";
+
+export default function ClientRegister() {
+  const [name, setName] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [clientWallet, setClientWallet] = useState("");
+  const [clientAddress, setClientAddress] = useState("");
+  const history = useHistory();
+
+  async function handleClientRegister(e) {
+    e.preventDefault();
+
+    const data = {
+      name,
+      cpf,
+      clientWallet,
+      clientAddress,
+    };
+
+    try {
+      await api.post("client_register", data);
+
+      history.push("/home");
+    } catch (err) {
+      alert("Ocorreu um erro ao cadastrar o cliente");
+    }
+  }
+
+  return (
+    <div className="new-client-container">
+      <div className="content">
+        <section>
+          <Link className="back-link" to="/home">
+            <FiArrowLeft size={16} color="#fff" />
+            Voltar para Home
+          </Link>
+        </section>
+
+        <form>
+          <h1>Cadastrar novo cliente</h1>
+          <input
+            placeholder="Nome"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <input
+            placeholder="CPF"
+            value={cpf}
+            onChange={(e) => setCpf(e.target.value)}
+          />
+          <input
+            placeholder="Endereço da carteira"
+            value={clientWallet}
+            onChange={(e) => setClientWallet(e.target.value)}
+          />
+          <input
+            placeholder="Endereço da cliente"
+            value={clientAddress}
+            onChange={(e) => setClientAddress(e.target.value)}
+          />
+
+          <button
+            onClick={handleClientRegister}
+            className="button"
+            type="submit"
+          >
+            Cadastrar
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
