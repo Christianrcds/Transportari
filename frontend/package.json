@@ -14,7 +14,7 @@
     "react-icons": "^3.9.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
-    "solc": "0.4.25",
+    "solc": "^0.8.7-fixed",
     "truffle-hdwallet-provider": "^1.0.17",
     "web3": "^1.5.2"
   },

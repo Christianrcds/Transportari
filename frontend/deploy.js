@@ -6,8 +6,7 @@ const { interface, bytecode } = require("./compile");
 
 // TODO
 const provider = new HDWalletProvider();
-`credit monitor jealous shrimp keep bundle mom satoshi tourist honey sand scissors`,
-  `https://rinkeby.infura.io/v3/4bc0298da8f04b2293726d016683bbc4`;
+PROCESS.ENV.PASSWORD, PROCESS.ENV.RINKEBYURL;
 
 const web3 = new Web3(provider);
 
