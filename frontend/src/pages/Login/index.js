@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { FiLogIn } from "react-icons/fi";
 import alertify from "alertifyjs";
-
 import api from "../../services/api";
 
 import "./styles.css";
