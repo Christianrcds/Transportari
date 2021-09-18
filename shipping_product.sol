@@ -15,7 +15,6 @@ contract TravelManager {
         string cpf;
     }
 
-
     struct Client {
         string cpf;
         string name;
@@ -57,7 +56,6 @@ contract TravelManager {
     mapping(address => Driver) drivers;
     mapping(address => Client) clients;
     mapping(address => ShippingCompany) shipping_companies;
-
 
     function buildStatus() private pure returns (Status memory){
             Status memory status;
@@ -136,7 +134,6 @@ contract TravelManager {
     function getDriver(address driver_wallet) public view returns (Driver memory){
         return drivers[driver_wallet];
     }
-
 
     function createClient(string memory name, address payable client_wallet, string memory cpf, string memory client_address) public returns (uint256) {
         if(clients[client_wallet].client_wallet == client_wallet){
@@ -229,7 +226,6 @@ contract TravelManager {
         return 1;
     }
 
-
     //valor vai direto para a transportadora
     function payShippingCompany(uint256 travel_id) internal returns(bool) {
         Travel memory _travel = travels[travel_id];
@@ -248,7 +244,7 @@ contract TravelManager {
         driver.transfer(_travel.travel_cost/4);
     }
 
-     function payDriver2(address payable driver, uint256 travel_id) internal{
+    function payDriver2(address payable driver, uint256 travel_id) internal{
         Travel memory _travel = travels[travel_id];
 
         driver.transfer(_travel.travel_cost/4);
