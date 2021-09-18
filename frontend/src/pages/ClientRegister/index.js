@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
-
-import api from "../../services/api";
+import travelManager from "../../travelManager";
 
 import "./styles.css";
 
@@ -16,18 +15,14 @@ export default function ClientRegister() {
   async function handleClientRegister(e) {
     e.preventDefault();
 
-    const data = {
-      name,
-      cpf,
-      clientWallet,
-      clientAddress,
-    };
-
     try {
-      await api.post("client_register", data);
-
+      const client = await travelManager.methods
+        .createClient(name, clientWallet, cpf, clientAddress)
+        .send({ from: "0xbD26FF6470E831Ef9F203d79e1418Cf2CceAf3A6" });
+      console.log(client);
       history.push("/home");
     } catch (err) {
+      console.log(err);
       alert("Ocorreu um erro ao cadastrar o cliente");
     }
   }

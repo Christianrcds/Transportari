@@ -3,16 +3,22 @@ import { Link, useHistory } from "react-router-dom";
 import { FiPower } from "react-icons/fi";
 import { FiTrash2 } from "react-icons/fi";
 import api from "../../services/api";
+import travelManager from "../../travelManager";
 import "./styles.css";
 
 export default function Home() {
   const [travels, setTravels] = useState([]);
   const userName = localStorage.getItem("userName");
   const history = useHistory();
+
   useEffect(() => {
-    api.get("home", (response) => {
-      setTravels(response.data);
-    });
+    async function getClient() {
+      const a = await travelManager.methods
+        .getClient("0xbD26FF6470E831Ef9F203d79e1418Cf2CceAf3A6")
+        .call();
+      console.log(a);
+    }
+    getClient();
   }, []);
 
   function handleLogout() {

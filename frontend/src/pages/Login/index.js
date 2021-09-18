@@ -14,14 +14,6 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const history = useHistory();
 
-  useEffect(() => {
-    async function teste() {
-      const check = await travelManager.methods.check().call();
-      console.log(check);
-    }
-    teste();
-  }, []);
-
   async function handleLogin(e) {
     e.preventDefault();
 
