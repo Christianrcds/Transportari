@@ -5,7 +5,6 @@ require("dotenv").config();
 const { interface, bytecode } = require("./compile");
 
 // TODO
-console.log(process.env.PASSWORD);
 const provider = new HDWalletProvider(
   process.env.PASSWORD,
   process.env.RINKEBYURL
@@ -17,12 +16,12 @@ const deploy = async () => {
   // getting accounts from our Metamask wallet
   const accounts = await web3.eth.getAccounts();
 
-  //   console.log("Attempting to deploy from account", accounts[0]);
-
   // deploying our contract
   const result = await new web3.eth.Contract(interface)
     .deploy({ data: bytecode })
     .send({ gas: "6000000", from: accounts[0] });
+
+  console.log(JSON.stringify(interface));
 
   console.log("Contract deployed to", result.options.address);
 };
