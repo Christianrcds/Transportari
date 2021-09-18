@@ -5,7 +5,6 @@ require("dotenv").config();
 const { interface, bytecode } = require("./compile");
 
 // TODO
-console.log(process.env.PASSWORD);
 const provider = new HDWalletProvider(
   process.env.PASSWORD,
   process.env.RINKEBYURL
@@ -23,7 +22,6 @@ const deploy = async () => {
   const result = await new web3.eth.Contract(interface)
     .deploy({ data: bytecode })
     .send({ gas: "6000000", from: accounts[0] });
-
   console.log("Contract deployed to", result.options.address);
 };
 deploy();

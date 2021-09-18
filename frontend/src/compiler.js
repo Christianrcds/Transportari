@@ -28,6 +28,6 @@ const variable = JSON.parse(solc.compile(JSON.stringify(complierInput)))
 console.log("Contract compiled successfully");
 
 const bytecode = variable.evm.bytecode.object;
-const interface = variable.abi;
+const abi = variable.abi;
 
-module.exports = { bytecode, interface };
+module.exports = { bytecode, abi };
