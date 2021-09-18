@@ -18,7 +18,7 @@ export default function Login() {
     const registerName = localStorage.getItem("registerName");
     const registerEmail = localStorage.getItem("registerEmail");
     if (name === registerName || name === registerEmail) {
-      localStorage.setItem("userName", name);
+      localStorage.setItem("userName", registerName);
       history.push("/home");
     } else {
       alertify.error("Oh oh! Parece que algo deu errado... tente novamente!");
