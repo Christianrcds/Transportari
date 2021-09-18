@@ -11,13 +11,18 @@ import transportariImg from "../../assets/transportarilogo.png";
 
 export default function Login() {
   const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
   const history = useHistory();
   async function handleLogin(e) {
     e.preventDefault();
 
     const registerName = localStorage.getItem("registerName");
     const registerEmail = localStorage.getItem("registerEmail");
-    if (name === registerName || name === registerEmail) {
+    const registerPassword = localStorage.getItem("registerPassword");
+    if (
+      (name === registerName && password === registerPassword) ||
+      (name === registerEmail && password === registerPassword)
+    ) {
       localStorage.setItem("userName", registerName);
       history.push("/home");
     } else {
@@ -31,9 +36,16 @@ export default function Login() {
         <form onSubmit={handleLogin}>
           <h1>Login</h1>
           <input
-            placeholder="Seu name"
+            placeholder="Seu name ou email"
             value={name}
             onChange={(e) => setName(e.target.value)}
+          />
+          <input
+            style={{ marginTop: "16px" }}
+            type="password"
+            placeholder="Senha"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <button className="button" type="submit">
             Entrar
