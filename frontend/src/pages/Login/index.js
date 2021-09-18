@@ -11,17 +11,16 @@ import "./alertify.min.css";
 import transportariImg from "../../assets/transportarilogo.png";
 
 export default function Login() {
-  const [id, setId] = useState("");
+  const [name, setName] = useState("");
   const history = useHistory();
   async function handleLogin(e) {
     e.preventDefault();
 
-    try {
-      const response = await api.post("sessions", { id });
-      localStorage.setItem("ongId", id);
-      localStorage.setItem("ongName", response.data.name);
+    const registerName = localStorage.getItem("registerName");
+    if (name === registerName) {
+      localStorage.setItem("userName", name);
       history.push("/home");
-    } catch (err) {
+    } else {
       alertify.error("Oh oh! Parece que algo deu errado... tente novamente!");
     }
   }
@@ -32,9 +31,9 @@ export default function Login() {
         <form onSubmit={handleLogin}>
           <h1>Login</h1>
           <input
-            placeholder="Sua ID"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
+            placeholder="Seu name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
           <button className="button" type="submit">
             Entrar
@@ -42,11 +41,11 @@ export default function Login() {
 
           <Link className="back-link" to="/register">
             <FiLogIn size={16} color="#fff" />
-            Não tenho cadastro
+            Cadastrar-se
           </Link>
         </form>
       </section>
-      <img src={transportariImg} alt="Heroes" />
+      <img src={transportariImg} alt="Transportari" />
     </div>
   );
 }

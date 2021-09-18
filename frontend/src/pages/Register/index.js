@@ -21,21 +21,22 @@ export default function Register() {
     const data = {
       name,
       email,
+      password,
     };
 
     try {
-      const response = await api.post("ongs", data);
+      localStorage.setItem("registerName", name);
+      localStorage.setItem("registerPassword", password);
+      localStorage.setItem("registerEmail", email);
 
       alertify.alert(
-        `Yeah! Obrigado por se cadastar em nosso sistema! Aqui está o seu ID de acesso: ${response.data.id} 🦸‍♂️`,
+        `Obrigado por se cadastar em nosso sistema! Aqui está o seu ID de acesso, utilize: ${name} ou ${email}`,
         function () {}
       );
 
       history.push("/");
     } catch (err) {
-      alertify.error(
-        "Ih, acho que o Superman encostou em uma Kryptonita! Teve um erro no cadastro, tente novamente."
-      );
+      alertify.error("Teve um erro no cadastro, tente novamente.");
     }
   }
 
