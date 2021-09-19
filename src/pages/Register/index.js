@@ -13,11 +13,13 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userWallet, setUserWallet] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const history = useHistory();
 
   async function handleRegister(e) {
     e.preventDefault();
+    setLoading(true);
 
     try {
       localStorage.setItem("registerName", name);
@@ -33,6 +35,8 @@ export default function Register() {
       history.push("/");
     } catch (err) {
       alertify.error("Teve um erro no cadastro, tente novamente.");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -75,8 +79,7 @@ export default function Register() {
           />
 
           <button className="button" type="submit">
-            {" "}
-            Cadastrar{" "}
+            {loading ? <div className="loader"></div> : <>Cadastrar</>}
           </button>
         </form>
       </div>

@@ -5,6 +5,7 @@ import { FiArrowLeft } from "react-icons/fi";
 import "./styles.css";
 
 export default function TravelRegister() {
+  const [loading, setLoading] = useState(false);
   const [driverWallet, setDriverWallet] = useState("");
   const [clientWallet, setClientWallet] = useState("");
   const [shipperWallet, setShipperWallet] = useState("");
@@ -20,13 +21,18 @@ export default function TravelRegister() {
 
   async function handleTravelRegister(e) {
     e.preventDefault();
+    setLoading(true);
 
     try {
       history.push("/home");
     } catch (err) {
       alert("Ocorreu um erro ao cadastrar a viagem");
+    } finally {
+      setLoading(false);
     }
   }
+
+  console.log(loading);
 
   return (
     <div className="new-travel-container">
@@ -105,7 +111,7 @@ export default function TravelRegister() {
             className="button"
             type="submit"
           >
-            Cadastrar
+            {loading ? <div className="loader"></div> : <>Cadastrar</>}
           </button>
         </form>
       </div>

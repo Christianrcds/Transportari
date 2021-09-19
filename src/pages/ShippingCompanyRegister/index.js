@@ -8,10 +8,12 @@ import "./styles.css";
 export default function ShippingCompanyRegister() {
   const [name, setName] = useState("");
   const [shippingCompanyWallet, setClientWallet] = useState("");
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
 
   async function handleShippingCompanyRegister(e) {
     e.preventDefault();
+    setLoading(true);
 
     try {
       await travelManager.methods
@@ -21,6 +23,8 @@ export default function ShippingCompanyRegister() {
       history.push("/home");
     } catch (err) {
       alert("Ocorreu um erro ao cadastrar a transportadora");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -53,7 +57,7 @@ export default function ShippingCompanyRegister() {
             className="button"
             type="submit"
           >
-            Cadastrar
+            {loading ? <div className="loader"></div> : <>Cadastrar</>}
           </button>
         </form>
       </div>
