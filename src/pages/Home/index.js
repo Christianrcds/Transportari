@@ -4,6 +4,8 @@ import { FiPower } from "react-icons/fi";
 import { FiTrash2 } from "react-icons/fi";
 import api from "../../services/api";
 import travelManager from "../../travelManager";
+import TravelCard from "../../components/TravelCard";
+
 import "./styles.css";
 
 export default function Home() {
@@ -52,6 +54,8 @@ export default function Home() {
             <ul>
                 {/* {travels.map((travel) => (
         ))} */}
+                <TravelCard />
+                <TravelCard />
             </ul>
         </div>
     );
