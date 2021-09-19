@@ -11,7 +11,7 @@ export default function TravelCard({
   ...props
 }) {
   return (
-    <Link to={`travels/${id}`} className="disabled-link">
+    <Link to={`travel/${id}`} className="disabled-link">
       <div className="container">
         <div className="wrapper">
           <div className="side-bar" />
