@@ -27,7 +27,6 @@ export default function TravelRegister() {
 
         getTravel();
     }, [params.id]);
-    console.log(travel?.status);
 
     // async function handleTravelAlterAgreement(e) {
     //     e.preventDefault();
@@ -46,15 +45,6 @@ export default function TravelRegister() {
     //                 productHeight
     //             )
     //             .send({ from: localStorage.getItem("userWallet") });
-
-    //         history.push("/home");
-    //     } catch (err) {
-    //         console.log(err);
-    //         alert("Ocorreu um erro ao cadastrar a viagem");
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // }
 
     if (!travel) {
         return <div></div>;
