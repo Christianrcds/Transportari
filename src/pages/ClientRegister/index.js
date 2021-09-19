@@ -9,10 +9,12 @@ export default function ClientRegister() {
   const [name, setName] = useState("");
   const [clientWallet, setClientWallet] = useState("");
   const [clientAddress, setClientAddress] = useState("");
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
 
   async function handleClientRegister(e) {
     e.preventDefault();
+    setLoading(true);
 
     try {
       await travelManager.methods
@@ -22,6 +24,8 @@ export default function ClientRegister() {
       history.push("/home");
     } catch (err) {
       alert("Ocorreu um erro ao cadastrar o cliente");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -59,7 +63,7 @@ export default function ClientRegister() {
             className="button"
             type="submit"
           >
-            Cadastrar
+            {loading ? <div className="loader"></div> : <>Cadastrar</>}
           </button>
         </form>
       </div>
