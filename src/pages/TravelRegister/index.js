@@ -83,18 +83,6 @@ export default function TravelRegister() {
           />
 
           <input
-            placeholder="Destino da viagem"
-            value={origin}
-            onChange={(e) => setOrigin(e.target.value)}
-          />
-
-          <input
-            placeholder="Destino da viagem"
-            value={origin}
-            onChange={(e) => setOrigin(e.target.value)}
-          />
-
-          <input
             placeholder="Peso do produto"
             value={productWeight}
             onChange={(e) => setProductWeight(e.target.value)}
