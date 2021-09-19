@@ -54,6 +54,9 @@ export default function Home() {
         ))} */}
         <TravelCard />
         <TravelCard />
+        <Link className="button d-flex justify-content-center" to="travel/new">
+          Cadastrar nova viagem
+        </Link>
       </ul>
     </div>
   );
