@@ -12,13 +12,14 @@ export default function Home() {
   const history = useHistory();
 
   useEffect(() => {
-    async function getClient() {
-      const a = await travelManager.methods
-        .getClient("0xbD26FF6470E831Ef9F203d79e1418Cf2CceAf3A6")
-        .call();
-      console.log(a);
+    async function getTravels() {
+      try {
+        const response = await travelManager.methods.getTravels().call();
+        setTravels(response);
+      } catch (error) {}
     }
-    getClient();
+
+    getTravels();
   }, []);
 
   function handleLogout() {
@@ -46,18 +47,21 @@ export default function Home() {
           <FiPower size={18} color="#fff" />
         </button>
       </header>
-
       <h1>Viagens criadas</h1>
-
       <ul>
-        {/* {travels.map((travel) => (
-        ))} */}
-        <TravelCard />
-        <TravelCard />
-        <Link className="button d-flex justify-content-center" to="travel/new">
-          Cadastrar nova viagem
-        </Link>
+        {travels.map((travel, idx) => (
+          <TravelCard
+            id={idx}
+            company={travel.shipping_company.name}
+            client={travel.client.name}
+            driver={travel.driver.name}
+            status={travel.status}
+          />
+        ))}
       </ul>
+      <Link className="button d-flex justify-content-center" to="travel/new">
+        Cadastrar nova viagem
+      </Link>
     </div>
   );
 }
