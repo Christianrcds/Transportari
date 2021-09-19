@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 import travelManager from "../../travelManager";
@@ -47,6 +47,19 @@ export default function TravelRegister() {
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    async function handleClientAddress() {
+      const client = await travelManager.methods.getClient(clientWallet).call();
+      if (!!client) {
+        setDestination(client.client_address);
+      }
+    }
+
+    if (clientWallet.length >= 42) {
+      handleClientAddress();
+    }
+  }, [clientWallet]);
 
   return (
     <div className="new-travel-container">
