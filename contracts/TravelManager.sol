@@ -6,17 +6,14 @@ contract TravelManager {
     struct ShippingCompany {
         string name;
         address payable shipper_wallet;
-        string cnpj;
     }
 
     struct Driver {
         string name;
         address payable driver_wallet;
-        string cpf;
     }
 
     struct Client {
-        string cpf;
         string name;
         string client_address;
         address payable client_wallet;
@@ -95,7 +92,7 @@ contract TravelManager {
             return 1;
     }
 
-    function createShippingCompany(string memory name, address payable shipper_wallet, string memory cnpj) public returns (uint256) {
+    function createShippingCompany(string memory name, address payable shipper_wallet) public returns (uint256) {
         if(shipping_companies[shipper_wallet].shipper_wallet == shipper_wallet){
             return 0;
         }
@@ -104,7 +101,6 @@ contract TravelManager {
         
         shipping_company.name = name;
         shipping_company.shipper_wallet = shipper_wallet;
-        shipping_company.cnpj = cnpj;
 
         shipping_companies[shipper_wallet] = shipping_company;
     
@@ -115,7 +111,7 @@ contract TravelManager {
         return shipping_companies[shipper_wallet];
     }
 
-    function createDriver(string memory name, address payable driver_wallet, string memory cpf) public returns (uint256) {
+    function createDriver(string memory name, address payable driver_wallet) public returns (uint256) {
         if(drivers[driver_wallet].driver_wallet == driver_wallet){
             return 0;
         }
@@ -124,7 +120,6 @@ contract TravelManager {
         
         driver.name = name;
         driver.driver_wallet = driver_wallet;
-        driver.cpf = cpf;
 
         drivers[driver_wallet] = driver;
     
@@ -135,7 +130,7 @@ contract TravelManager {
         return drivers[driver_wallet];
     }
 
-    function createClient(string memory name, address payable client_wallet, string memory cpf, string memory client_address) public returns (uint256) {
+    function createClient(string memory name, address payable client_wallet, string memory client_address) public returns (uint256) {
         if(clients[client_wallet].client_wallet == client_wallet){
             return 0;
         }
@@ -144,7 +139,6 @@ contract TravelManager {
         
         client.name = name;
         client.client_wallet = client_wallet;
-        client.cpf = cpf;
         client.client_address = client_address;
 
         clients[client_wallet] = client;
