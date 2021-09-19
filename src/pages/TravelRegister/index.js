@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
+import travelManager from "../../travelManager";
 
 import "./styles.css";
 
@@ -24,8 +25,23 @@ export default function TravelRegister() {
     setLoading(true);
 
     try {
+      await travelManager.methods
+        .createTravel(
+          driverWallet,
+          clientWallet,
+          shipperWallet,
+          +travelCost,
+          origin,
+          product,
+          productWeight,
+          productWidth,
+          productHeight
+        )
+        .send({ from: localStorage.getItem("userWallet") });
+
       history.push("/home");
     } catch (err) {
+      console.log(err);
       alert("Ocorreu um erro ao cadastrar a viagem");
     } finally {
       setLoading(false);
@@ -65,7 +81,8 @@ export default function TravelRegister() {
           />
 
           <input
-            placeholder="Custo da viagem"
+            type="number"
+            placeholder="Custo da viagem (wei)"
             value={travelCost}
             onChange={(e) => setTravelCost(e.target.value)}
           />
@@ -89,18 +106,21 @@ export default function TravelRegister() {
           />
 
           <input
+            type="number"
             placeholder="Peso do produto"
             value={productWeight}
             onChange={(e) => setProductWeight(e.target.value)}
           />
 
           <input
+            type="number"
             placeholder="Altura do produto"
             value={productHeight}
             onChange={(e) => setProductHeight(e.target.value)}
           />
 
           <input
+            type="number"
             placeholder="Largura do produto"
             value={productWidth}
             onChange={(e) => setProductWidth(e.target.value)}

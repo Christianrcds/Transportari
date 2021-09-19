@@ -49,7 +49,7 @@ export default function ClientRegister() {
             onChange={(e) => setClientWallet(e.target.value)}
           />
           <input
-            placeholder="Endereço da cliente"
+            placeholder="Endereço do cliente"
             value={clientAddress}
             onChange={(e) => setClientAddress(e.target.value)}
           />
