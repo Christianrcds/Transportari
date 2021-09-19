@@ -48,8 +48,6 @@ export default function TravelRegister() {
     }
   }
 
-  console.log(loading);
-
   return (
     <div className="new-travel-container">
       <div className="content">

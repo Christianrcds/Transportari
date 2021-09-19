@@ -14,13 +14,16 @@ export default function TravelCard({
         <Link to={`travel/${id}`} className="disabled-link">
             <div className="container">
                 <div className="wrapper">
-                    <div className="side-bar" />
+                    <div
+                        className="side-bar"
+                        style={{ backgroundColor: `${status?.color}` }}
+                    />
                     <div>
                         <div className="infos">ID: {id} </div>
                         <div className="infos">Company: {company} </div>
                         <div className="infos">Client: {client}</div>
                         <div className="infos">Driver: {driver}</div>
-                        <div className="infos">Status: {status}</div>
+                        <div className="infos">Status: {status?.name}</div>
                     </div>
                 </div>
             </div>
