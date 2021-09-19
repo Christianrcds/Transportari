@@ -23,9 +23,8 @@ export default function ClientRegister() {
 
       history.push("/home");
     } catch (err) {
+      console.log(err);
       alert("Ocorreu um erro ao cadastrar o cliente");
-    } finally {
-      setLoading(false);
     }
   }
 

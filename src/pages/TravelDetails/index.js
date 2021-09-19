@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 import travelManager from "../../travelManager";
 
@@ -7,49 +7,59 @@ import "./styles.css";
 
 export default function TravelRegister() {
   const [loading, setLoading] = useState(false);
-  const [driverWallet, setDriverWallet] = useState("");
-  const [clientWallet, setClientWallet] = useState("");
-  const [shipperWallet, setShipperWallet] = useState("");
-  const [travelCost, setTravelCost] = useState("");
-  const [origin, setOrigin] = useState("");
-  const [destination, setDestination] = useState("");
-  const [product, setProduct] = useState("");
-  const [productWeight, setProductWeight] = useState("");
-  const [productWidth, setProductWidth] = useState("");
-  const [productHeight, setProductHeight] = useState("");
+  const [travel, setTravel] = useState();
+  const [wallet, setWallet] = useState("");
 
   const history = useHistory();
+  const params = useParams();
 
-  async function handleTravelRegister(e) {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      await travelManager.methods
-        .createTravel(
-          driverWallet,
-          clientWallet,
-          shipperWallet,
-          +travelCost,
-          origin,
-          product,
-          productWeight,
-          productWidth,
-          productHeight
-        )
-        .send({ from: localStorage.getItem("userWallet") });
-
-      history.push("/home");
-    } catch (err) {
-      console.log(err);
-      alert("Ocorreu um erro ao cadastrar a viagem");
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    async function getTravel() {
+      try {
+        const response = await travelManager.methods
+          .getTravel(params.id)
+          .call();
+        setTravel(response);
+      } catch (error) {
+        console.log(error);
+      }
     }
-  }
 
+    getTravel();
+  }, [params.id]);
+
+  // async function handleTravelAlterAgreement(e) {
+  //     e.preventDefault();
+  //     setLoading(true);
+
+  //     try {
+  //         await travelManager.methods
+  //             .createTravel(
+  //                 clientWallet,
+  //                 shipperWallet,
+  //                 +travelCost,
+  //                 origin,
+  //                 product,
+  //                 productWeight,
+  //                 productWidth,
+  //                 productHeight
+  //             )
+  //             .send({ from: localStorage.getItem("userWallet") });
+
+  //         history.push("/home");
+  //     } catch (err) {
+  //         console.log(err);
+  //         alert("Ocorreu um erro ao cadastrar a viagem");
+  //     } finally {
+  //         setLoading(false);
+  //     }
+  // }
+
+  if (!travel) {
+    return <div></div>;
+  }
   return (
-    <div className="new-travel-container">
+    <div className="travel-details-container">
       <div className="content">
         <section>
           <Link className="back-link" to="/home">
@@ -57,81 +67,48 @@ export default function TravelRegister() {
             Voltar para Home
           </Link>
         </section>
+        <div>
+          <h1>Informações da viagem</h1>
+          <div className="infos-container">
+            <h2>Transportadora: {travel.shipping_company[0]}</h2>
+            <h2>Motorista: {travel.driver[0]}</h2>
+            <h2>Cliente: {travel.client[0]}</h2>
+            <h2>Produto: {travel.product.name}</h2>
+            <h2>Origem: {travel.from}</h2>
+            <h2>Destino: {travel.to}</h2>
+            <h2>Status: {travel.status}</h2>
 
-        <form>
-          <h1>Cadastrar nova viagem</h1>
-          <input
-            placeholder="Carteira do motorista"
-            value={driverWallet}
-            onChange={(e) => setDriverWallet(e.target.value)}
-          />
+            <div className="status-items">
+              <div className="status-items-wrapper">
+                <h3>Motorista</h3>
+                <div />
+              </div>
+              <div className="status-items-wrapper">
+                <h3>Transportadora</h3>
+                <div />
+              </div>
+              <div className="status-items-wrapper">
+                <h3>Cliente</h3>
+                <div />
+              </div>
+            </div>
+          </div>
+          <form>
+            <input
+              placeholder="Endereço da carteira para alteração de status"
+              value={wallet}
+              onChange={(e) => setWallet(e.target.value)}
+            />
 
-          <input
-            placeholder="Carteira do cliente"
-            value={clientWallet}
-            onChange={(e) => setClientWallet(e.target.value)}
-          />
-
-          <input
-            placeholder="Carteira da transportadora"
-            value={shipperWallet}
-            onChange={(e) => setShipperWallet(e.target.value)}
-          />
-
-          <input
-            type="number"
-            placeholder="Custo da viagem (wei)"
-            value={travelCost}
-            onChange={(e) => setTravelCost(e.target.value)}
-          />
-
-          <input
-            placeholder="Origem da viagem"
-            value={origin}
-            onChange={(e) => setOrigin(e.target.value)}
-          />
-
-          <input
-            placeholder="Destino da viagem"
-            value={destination}
-            onChange={(e) => setDestination(e.target.value)}
-          />
-
-          <input
-            placeholder="Produto"
-            value={product}
-            onChange={(e) => setProduct(e.target.value)}
-          />
-
-          <input
-            type="number"
-            placeholder="Peso do produto"
-            value={productWeight}
-            onChange={(e) => setProductWeight(e.target.value)}
-          />
-
-          <input
-            type="number"
-            placeholder="Altura do produto"
-            value={productHeight}
-            onChange={(e) => setProductHeight(e.target.value)}
-          />
-
-          <input
-            type="number"
-            placeholder="Largura do produto"
-            value={productWidth}
-            onChange={(e) => setProductWidth(e.target.value)}
-          />
-
-          <button
-            onClick={handleTravelRegister}
-            className="button"
-            type="submit"
-          >
-            {loading ? <div className="loader"></div> : <>Cadastrar</>}
-          </button>
-        </form>
+            <button
+              // onClick={handleTravelAlterAgreement}
+              className="button"
+              type="submit"
+            >
+              {loading ? <div className="loader"></div> : <>Alterar Status</>}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
