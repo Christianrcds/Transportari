@@ -180,6 +180,14 @@ contract TravelManager {
         return travels[travel_id];
     }
 
+    function getTravels() public view returns(Travel[] memory){
+        Travel[] memory ret = new Travel[](travels_size);
+        for (uint i = 0; i < travels_size; i++) {
+            ret[i] = travels[i];
+        }
+        return ret;
+    }
+
     function alterAgreement(uint256 travel_id) public payable returns(uint) {
         Travel memory _travel = travels[travel_id];
         
@@ -248,12 +256,6 @@ contract TravelManager {
         return address(this).balance;
     }
 }
-
-
-
-
-
-
 
 
 
