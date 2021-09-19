@@ -7,52 +7,54 @@ import travelManager from "../../travelManager";
 import "./styles.css";
 
 export default function Home() {
-    const [travels, setTravels] = useState([]);
-    const userName = localStorage.getItem("userName");
-    const history = useHistory();
+  const [travels, setTravels] = useState([]);
+  const userName = localStorage.getItem("userName");
+  const history = useHistory();
 
-    useEffect(() => {
-        async function getClient() {
-            const a = await travelManager.methods
-                .getClient("0xbD26FF6470E831Ef9F203d79e1418Cf2CceAf3A6")
-                .call();
-            console.log(a);
-        }
-        getClient();
-    }, []);
-
-    function handleLogout() {
-        localStorage.clear();
-        history.push("/");
+  useEffect(() => {
+    async function getClient() {
+      const a = await travelManager.methods
+        .getClient("0xbD26FF6470E831Ef9F203d79e1418Cf2CceAf3A6")
+        .call();
+      console.log(a);
     }
+    getClient();
+  }, []);
 
-    return (
-        <div className="home-container">
-            <header>
-                <span>
-                    Bem vindo (a), <strong>{userName}</strong>!
-                </span>
+  console.log(localStorage.getItem("userWallet"));
 
-                <Link className="button" to="client/new">
-                    Cadastrar cliente
-                </Link>
-                <Link className="button" to="driver/new">
-                    Cadastrar motorista
-                </Link>
-                <Link className="button" to="shipping_company/new">
-                    Cadastrar transportadora
-                </Link>
-                <button onClick={handleLogout} type="button">
-                    <FiPower size={18} color="#fff" />
-                </button>
-            </header>
+  function handleLogout() {
+    localStorage.clear();
+    history.push("/");
+  }
 
-            <h1>Viagens criadas</h1>
+  return (
+    <div className="home-container">
+      <header>
+        <span>
+          Bem vindo (a), <strong>{userName}</strong>!
+        </span>
 
-            <ul>
-                {/* {travels.map((travel) => (
+        <Link className="button" to="client/new">
+          Cadastrar cliente
+        </Link>
+        <Link className="button" to="driver/new">
+          Cadastrar motorista
+        </Link>
+        <Link className="button" to="shipping_company/new">
+          Cadastrar transportadora
+        </Link>
+        <button onClick={handleLogout} type="button">
+          <FiPower size={18} color="#fff" />
+        </button>
+      </header>
+
+      <h1>Viagens criadas</h1>
+
+      <ul>
+        {/* {travels.map((travel) => (
         ))} */}
-            </ul>
-        </div>
-    );
+      </ul>
+    </div>
+  );
 }
