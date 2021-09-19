@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 import travelManager from "../../travelManager";
-
+import { statusTranslation } from "../../utils";
 import "./styles.css";
 
 export default function TravelRegister() {
@@ -20,7 +20,6 @@ export default function TravelRegister() {
                     .getTravel(params.id)
                     .call();
                 setTravel(response);
-                console.log(response);
             } catch (error) {
                 console.log(error);
             }
@@ -28,6 +27,7 @@ export default function TravelRegister() {
 
         getTravel();
     }, [params.id]);
+    console.log(travel?.status);
 
     // async function handleTravelAlterAgreement(e) {
     //     e.preventDefault();
@@ -77,20 +77,45 @@ export default function TravelRegister() {
                         <h2>Produto: {travel.product.name}</h2>
                         <h2>Origem: {travel.from}</h2>
                         <h2>Destino: {travel.to}</h2>
-                        <h2>Status: {travel.status}</h2>
+                        <h2>
+                            Status:{" "}
+                            {
+                                statusTranslation[travel.status.current_status]
+                                    .name
+                            }
+                        </h2>
 
                         <div className="status-items">
                             <div className="status-items-wrapper">
                                 <h3>Motorista</h3>
-                                <div />
+                                <div
+                                    style={{
+                                        backgroundColor: travel.status.driver
+                                            ? "#27ae60"
+                                            : "#f04040",
+                                    }}
+                                />
                             </div>
                             <div className="status-items-wrapper">
                                 <h3>Transportadora</h3>
-                                <div />
+                                <div
+                                    style={{
+                                        backgroundColor: travel.status
+                                            .shipping_company
+                                            ? "#27ae60"
+                                            : "#f04040",
+                                    }}
+                                />
                             </div>
                             <div className="status-items-wrapper">
                                 <h3>Cliente</h3>
-                                <div />
+                                <div
+                                    style={{
+                                        backgroundColor: travel.status.client
+                                            ? "#27ae60"
+                                            : "#f04040",
+                                    }}
+                                />
                             </div>
                         </div>
                     </div>
