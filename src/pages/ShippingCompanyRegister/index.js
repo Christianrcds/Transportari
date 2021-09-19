@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
-
-import api from "../../services/api";
+import travelManager from "../../travelManager";
 
 import "./styles.css";
 
@@ -14,17 +13,14 @@ export default function ShippingCompanyRegister() {
   async function handleShippingCompanyRegister(e) {
     e.preventDefault();
 
-    const data = {
-      name,
-      shippingCompanyWallet,
-    };
-
     try {
-      await api.post("shipping_company_register", data);
+      await travelManager.methods
+        .createShippingCompany(name, shippingCompanyWallet)
+        .send({ from: localStorage.getItem("userWallet") });
 
       history.push("/home");
     } catch (err) {
-      alert("Ocorreu um erro ao cadastrar o shippingCompanye");
+      alert("Ocorreu um erro ao cadastrar a transportadora");
     }
   }
 

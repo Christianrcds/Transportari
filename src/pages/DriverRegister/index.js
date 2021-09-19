@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
-
-import api from "../../services/api";
+import travelManager from "../../travelManager";
 
 import "./styles.css";
 
@@ -14,17 +13,14 @@ export default function DriverRegister() {
   async function handleDriverRegister(e) {
     e.preventDefault();
 
-    const data = {
-      name,
-      driverWallet,
-    };
-
     try {
-      await api.post("driver_register", data);
+      await travelManager.methods
+        .createDriver(name, driverWallet)
+        .send({ from: localStorage.getItem("userWallet") });
 
       history.push("/home");
     } catch (err) {
-      alert("Ocorreu um erro ao cadastrar o drivere");
+      alert("Ocorreu um erro ao cadastrar o motora");
     }
   }
 

@@ -17,10 +17,10 @@ export default function ClientRegister() {
     try {
       await travelManager.methods
         .createClient(name, clientWallet, clientAddress)
-        .send({ from: "0xbD26FF6470E831Ef9F203d79e1418Cf2CceAf3A6" });
+        .send({ from: localStorage.getItem("userWallet") });
+
       history.push("/home");
     } catch (err) {
-      console.log(err);
       alert("Ocorreu um erro ao cadastrar o cliente");
     }
   }
