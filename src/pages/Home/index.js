@@ -10,13 +10,19 @@ export default function Home() {
   const [travels, setTravels] = useState([]);
   const userName = localStorage.getItem("userName");
   const history = useHistory();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function getTravels() {
+      setLoading(true);
       try {
         const response = await travelManager.methods.getTravels().call();
         setTravels(response);
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
     }
 
     getTravels();
@@ -49,17 +55,23 @@ export default function Home() {
       </header>
       <h1>Viagens criadas</h1>
       <ul>
-        {travels.map((travel, idx) => {
-          return (
-            <TravelCard
-              id={idx}
-              company={travel.shipping_company.name}
-              client={travel.client.name}
-              driver={travel.driver.name}
-              status={statusTranslation[travel.status?.current_status]}
-            />
-          );
-        })}
+        {loading ? (
+          <div className="loader"></div>
+        ) : (
+          <>
+            {travels.map((travel, idx) => {
+              return (
+                <TravelCard
+                  id={idx}
+                  company={travel.shipping_company.name}
+                  client={travel.client.name}
+                  driver={travel.driver.name}
+                  status={statusTranslation[travel.status?.current_status]}
+                />
+              );
+            })}
+          </>
+        )}
       </ul>
       <Link className="button d-flex justify-content-center" to="travel/new">
         Cadastrar nova viagem
