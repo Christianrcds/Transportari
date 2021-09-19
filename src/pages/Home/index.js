@@ -23,6 +23,8 @@ export default function Home() {
         getClient();
     }, []);
 
+    console.log(localStorage.getItem("userWallet"));
+
     function handleLogout() {
         localStorage.clear();
         history.push("/");
