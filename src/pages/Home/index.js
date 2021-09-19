@@ -3,7 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 import { FiPower } from "react-icons/fi";
 import travelManager from "../../travelManager";
 import TravelCard from "../../components/TravelCard";
-
+import { statusTranslation } from "../../utils";
 import "./styles.css";
 
 export default function Home() {
@@ -49,15 +49,17 @@ export default function Home() {
       </header>
       <h1>Viagens criadas</h1>
       <ul>
-        {travels.map((travel, idx) => (
-          <TravelCard
-            id={idx}
-            company={travel.shipping_company.name}
-            client={travel.client.name}
-            driver={travel.driver.name}
-            status={travel.status}
-          />
-        ))}
+        {travels.map((travel, idx) => {
+          return (
+            <TravelCard
+              id={idx}
+              company={travel.shipping_company.name}
+              client={travel.client.name}
+              driver={travel.driver.name}
+              status={statusTranslation[travel.status?.current_status]}
+            />
+          );
+        })}
       </ul>
       <Link className="button d-flex justify-content-center" to="travel/new">
         Cadastrar nova viagem
