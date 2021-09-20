@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 import travelManager from "../../travelManager";
 import { statusTranslation } from "../../utils";
@@ -19,6 +19,8 @@ export default function TravelRegister() {
           .getTravel(params.id)
           .call();
         setTravel(response);
+        const resopnse2 = await travelManager.methods.check().call();
+        console.log(resopnse2);
       } catch (error) {
         console.log(error);
       }
