@@ -10,7 +10,6 @@ export default function TravelRegister() {
   const [travel, setTravel] = useState();
   const [wallet, setWallet] = useState("");
 
-  const history = useHistory();
   const params = useParams();
 
   useEffect(() => {
