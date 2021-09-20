@@ -41,11 +41,11 @@ export default function TravelRegister() {
 
     if (
       wallet === travel.shipping_company.shipper_wallet &&
-      travel.status.current_status === 1
+      +travel.status.current_status === 1
     ) {
       value = travel.travel_cost / 2;
     }
-    console.log(wallet);
+
     try {
       await travelManager.methods
         .alterAgreement(+params.id)
