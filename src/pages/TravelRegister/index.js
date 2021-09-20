@@ -30,7 +30,7 @@ export default function TravelRegister() {
           driverWallet,
           clientWallet,
           shipperWallet,
-          +travelCost,
+          travelCost,
           origin,
           product,
           productWeight,
