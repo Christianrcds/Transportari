@@ -8,9 +8,9 @@ import "./styles.css";
 
 export default function Home() {
   const [travels, setTravels] = useState([]);
+  const [loading, setLoading] = useState(false);
   const userName = localStorage.getItem("userName");
   const history = useHistory();
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function getTravels() {
@@ -49,10 +49,12 @@ export default function Home() {
         <Link className="button" to="shipping_company/new">
           Cadastrar transportadora
         </Link>
+
         <button onClick={handleLogout} type="button">
           <FiPower size={18} color="#fff" />
         </button>
       </header>
+
       <h1>Viagens criadas</h1>
       <ul>
         {loading ? (
