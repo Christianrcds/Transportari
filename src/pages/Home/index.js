@@ -61,17 +61,25 @@ export default function Home() {
           <div className="loader"></div>
         ) : (
           <>
-            {travels.map((travel, idx) => {
-              return (
-                <TravelCard
-                  id={idx}
-                  company={travel.shipping_company.name}
-                  client={travel.client.name}
-                  driver={travel.driver.name}
-                  status={statusTranslation[travel.status?.current_status]}
-                />
-              );
-            })}
+            {travels.length > 0 ? (
+              <>
+                {travels.map((travel, idx) => {
+                  return (
+                    <TravelCard
+                      id={idx}
+                      company={travel.shipping_company.name}
+                      client={travel.client.name}
+                      driver={travel.driver.name}
+                      status={statusTranslation[travel.status?.current_status]}
+                    />
+                  );
+                })}
+              </>
+            ) : (
+              <div className="d-flex justify-content-center">
+                Nenhuma viagem foi criada ainda
+              </div>
+            )}
           </>
         )}
       </ul>
